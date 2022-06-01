@@ -398,7 +398,9 @@ class Ronin extends THREE.Object3D {
             this.caja.getWorldPosition(v_caja);
             vectorEntreObj.subVectors(new THREE.Vector2(v_caja.x, v_caja.z),
                 new THREE.Vector2(v_borde.x, v_borde.z));
-            return (vectorEntreObj.length() < 10); // se puede revisar
+            console.log(`Distancia con ${borde.name}: ${vectorEntreObj.length()}`);
+            console.log(`Ancho de borde ${borde.name}: ${borde.geometry.parameters.width}`)
+            return (vectorEntreObj.length() < borde.geometry.parameters.width); // se puede revisar
         }
     }
 
