@@ -48,6 +48,7 @@ class Mejora extends THREE.Object3D {
     mejoroVida() { return false; }
 
     mejoroAtaque() { return false; }
+
 }
 
 export {Mejora};

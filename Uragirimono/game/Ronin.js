@@ -9,9 +9,12 @@ import { Flecha } from './Flecha.js';
 var morirAction;
 var escaladoOriginal;
 
+const raycaster = new THREE.Raycaster();
+
 class Ronin extends THREE.Object3D {
-    constructor(camera, escena) {
+    constructor(camera, escena, borders) {
         super();
+        this.borders = borders;
         this.escena = escena;
         this.estado = "idle";
         this.clock = new THREE.Clock();
@@ -25,6 +28,8 @@ class Ronin extends THREE.Object3D {
         this.vidas = this.totalVidas;
         this.rondaActual = 1;
         this.danio = 1;
+
+        this.oldPosition = new THREE.Vector3(0,0,0);
 
         this.ronin = new THREE.Object3D(); // el personaje en sí
 
@@ -47,7 +52,7 @@ class Ronin extends THREE.Object3D {
 
         this.puntero = new THREE.Mesh(
             new THREE.TorusGeometry(1, 0.2, 16, 100),
-            new THREE.MeshToonMaterial({ color: 0xff12de })
+            new THREE.MeshToonMaterial({ color: "red" })
         );
         this.puntero.rotateX(Math.PI / 2);
         this.add(this.puntero);
@@ -56,7 +61,7 @@ class Ronin extends THREE.Object3D {
         this.ultimaDireccion = new THREE.Vector3();
         this.direccion = new THREE.Vector3();
         this.anguloRotacion = new THREE.Vector3(0, 1, 0);
-        this.velocidadMovimiento = 30;
+        this.velocidadMovimiento = 35;
         this.velocidadTrans = 0.2;
 
         this.ready = false;
@@ -65,16 +70,6 @@ class Ronin extends THREE.Object3D {
         $.when.apply(this, diferidos).done(() => {
             console.log("modelo cargado");
         });
-        this.barraVida = [];
-        for (var i = -this.vidas / 2 + 0.5; i < this.vidas / 2 + 0.5; i++) {
-            var vida = new THREE.Mesh(
-                new THREE.BoxBufferGeometry(2, 2, 2),
-                new THREE.MeshBasicMaterial({ color: "red" })
-            );
-            vida.position.set(0, 12.5, i * 4);
-            this.barraVida.push(vida);
-            // this.roninWrap.add(vida);
-        }
 
         //katana
         this.katana = new Katana();
@@ -84,6 +79,11 @@ class Ronin extends THREE.Object3D {
         // this.katana.position.set(-4, 5, 4); // posicion de ataque
         this.restaurarKatana();
         this.ronin.add(this.katanaWrap);
+
+        // luz que acompaña
+        this.luz = new THREE.PointLight(0xc29627, 0.6, 20);
+        this.luz.position.set(0,10,0);
+        this.roninWrap.add(this.luz);
     }
 
     loadModel() {
@@ -336,21 +336,33 @@ class Ronin extends THREE.Object3D {
     }
 
     disparar() {
+        /**
+         * Metodo para disparar una flecha
+         * Despues de muchos intentos, la mejor forma ha consistido en hacer un raycast
+         * hacia el sentido en el que mira el personaje, calculado con el direccion.applyQuaternion
+         * pero salia con un "offset" de 90º asi que le he hecho el producto vectorial con el
+         * eje Y y así obtener el sentido correcto
+         */
         if (!this.actions['morir'].isRunning() && this.vidas > 0) {
-            this.fadeToAction("disparar", 1)
-            var posicionGlobalRonin = new THREE.Vector3();
-            this.ronin.getWorldPosition(posicionGlobalRonin);
-            var direccion = new THREE.Vector3(
-                this.puntero.position.x - posicionGlobalRonin.x,
-                10,
-                this.puntero.position.z - posicionGlobalRonin.z
-            )
-            // direccion = direccion.normalize();
-            var angulo = Math.atan2((this.puntero.position.x - posicionGlobalRonin.x), (this.puntero.position.z - posicionGlobalRonin.z));
-            var flecha = new Flecha(this, this.escena.enemigos);
-            this.add(flecha);
-            flecha.disparar(posicionGlobalRonin, direccion, angulo);
+            if (!this.actions["disparar"].isRunning()) {
+                this.fadeToAction("disparar", 1)
+                var posicionGlobalRonin = new THREE.Vector3();
+                this.ronin.getWorldPosition(posicionGlobalRonin);
+                var direccion = new THREE.Vector3(1,0,0);
+                // this.puntero.getWorldPosition(direccion);
+                direccion.applyQuaternion(this.ronin.quaternion);
+                direccion = direccion.cross(new THREE.Vector3(0,1,0));
+                direccion = direccion.normalize();
 
+                raycaster.set(posicionGlobalRonin, direccion);
+                var intersects = raycaster.intersectObjects(this.borders);
+                var objetivo = intersects[0].point;
+                var angulo = Math.atan2((objetivo.x - posicionGlobalRonin.x), (objetivo.z - posicionGlobalRonin.z));
+                var flecha = new Flecha(this, this.escena.enemigos);
+                this.add(flecha);
+                this.ronin.getWorldPosition(posicionGlobalRonin);
+                flecha.disparar(posicionGlobalRonin, objetivo, angulo);
+            }
         }
     }
 
@@ -377,16 +389,25 @@ class Ronin extends THREE.Object3D {
         }
     }
 
+    interseccionBorde(borde){
+        if (this.ready) {
+            var vectorEntreObj = new THREE.Vector2();
+            var v_caja = new THREE.Vector3();
+            var v_borde = new THREE.Vector3();
+            borde.getWorldPosition(v_borde);
+            this.caja.getWorldPosition(v_caja);
+            vectorEntreObj.subVectors(new THREE.Vector2(v_caja.x, v_caja.z),
+                new THREE.Vector2(v_borde.x, v_borde.z));
+            return (vectorEntreObj.length() < 10); // se puede revisar
+        }
+    }
+
     quitarVida() {
         if (this.vidas > 0 && !(this.actions["recibeGolpe"].isRunning() || this.actions["morir"].isRunning())) {
             this.vidas -= 1;
             if (this.vidas > 0) {
                 this.fadeToAction("recibeGolpe", 1);
-                this.barraVida[this.totalVidas - this.vidas - 1].material.transparent = true;
-                this.barraVida[this.totalVidas - this.vidas - 1].material.opacity = 0;
             } else {
-                this.barraVida[this.totalVidas - this.vidas - 1].material.transparent = true;
-                this.barraVida[this.totalVidas - this.vidas - 1].material.opacity = 0;
                 this.fadeToAction("morir", 1);
 
             }
@@ -441,6 +462,15 @@ class Ronin extends THREE.Object3D {
             if (direccion) {
                 this.moverPersonaje(teclasPulsadas, camara, delta);
             }
+
+            this.borders.forEach(borde => {
+                if (this.interseccionBorde(borde)) {
+                    this.newX = this.oldPosition.x;
+                    this.newZ = this.oldPosition.z;
+                }
+            })
+
+            this.oldPosition = this.roninWrap.position.clone();
             this.roninWrap.position.x = this.newX;
             this.roninWrap.position.z = this.newZ;
 
