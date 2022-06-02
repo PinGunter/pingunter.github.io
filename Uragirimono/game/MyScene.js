@@ -44,6 +44,7 @@ class MyScene extends THREE.Scene {
         this.createCube();
 
         // Por último creamos el modelo.
+
         this.mapa = new Mapa();
         this.add(this.mapa);
         this.clock = new THREE.Clock();
@@ -55,7 +56,7 @@ class MyScene extends THREE.Scene {
         this.premios = [];
         this.finPremio = false;
         if (!this.debug) {
-            this.add(this.ronin);
+            this.add(this.ronin)
             var vidas = "";
             for (var i = 0; i < this.ronin.vidas; i++) {
                 vidas += "❤️";
@@ -186,7 +187,7 @@ class MyScene extends THREE.Scene {
     }
 
     rellenarEnemigos() {
-        for (var i = 0; i < this.ronda * 2; i++) {
+        for (var i = 0; i < this.ronda * 1.5; i++) {
             var wrapper = new THREE.Object3D();
             var motobug = new Motobug(this, this.ronda, this.mapa.hitboxes, i);
             var x = this.ronin.position.x;
@@ -322,11 +323,11 @@ class MyScene extends THREE.Scene {
     }
 
     pulsarTecla(evento) {
-        this.teclasPulsadas[evento.key] = true;
+        this.teclasPulsadas[evento.key.toLowerCase()] = true;
     }
 
     levantarTecla(evento) {
-        this.teclasPulsadas[evento.key] = false;
+        this.teclasPulsadas[evento.key.toLowerCase()] = false;
     }
 
     atacarRonin(evento) {
