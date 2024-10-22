@@ -1,1 +1,88 @@
-<!doctype html><html lang="es"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="theme-color" content="#000000"/><meta name="description" content="Portfolio de Salva Romero"/><link rel="manifest" href="/manifest.json"/><title>Salva Romero</title><script defer="defer" src="/static/js/main.39fdd8c3.js"></script><link href="/static/css/main.551ca4b4.css" rel="stylesheet"></head><body><noscript>You need to enable JavaScript to run this app.</noscript><div id="root"></div></body></html>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title style="display: none">Salva's Site</title>
+    <link rel="stylesheet" href="static/styles.css" />
+    <script src="static/index.js"></script>
+  </head>
+  <body onload="onLoad()" class="light">
+    <header>
+      <input
+        id="toggle"
+        class="toggle"
+        type="button"
+        value="☀ Toggle"
+        onclick="toggleDarkMode()"
+      />
+    </header>
+    <h1>How AstraEngine was made</h1>
+    <h2>List of Contents</h2>
+    <ul>
+      <li>
+        <a href="#1">Begginings with Vulkan</a>
+      </li>
+      <li>
+        <a href="#2">Taking the Nvidia Tutorials</a>
+      </li>
+    </ul>
+    <h2 id="1">Begginings with Vulkan</h2>
+    <p>
+      When I first started this project, 11 months ago, I had never used Vulkan
+      before. I had worked a little with OpenGL but Vulkan is a whole beast of
+      its own.
+    </p>
+    <p>
+      I first started with the classic
+      <a style="display: inline" href="https://vulkan-tutorial.com/"
+        >Vulkan Tutorial</a
+      >. After days (and weeks) working on it, trying to understand every bit of
+      it, I managed to get my first ever triangle in Vulkan.
+    </p>
+    <img src="static/vulkanTriangle.png" alt="vulkan RGB triangle" />
+    <p>A lot of time has passed since that moment but I'm still proud of it.</p>
+    <p>
+      Later I got to work with 3D models and some basic camera manipulation. At
+      this point I was modifying the basic tutorial code to get to know it more.
+      However I still did not understand it quite well.
+    </p>
+    <video src="static/cube.mp4" controls autoplay loop muted></video>
+
+    <p>
+      After that, I was kind of stuck. I didn't know how to organize the code
+      and interacting directly with the API without any abstractions was
+      difficult. Besides, one of my main goals with this project was to work
+      with the <strong>Ray-Tracing</strong> Vulkan Extension, so I needed to
+      start working on that.
+    </p>
+    <h2 id="2">Taking the Nvidia Tutorials</h2>
+    <p>
+      A couple of months passed, where I was in a weird spot: I didn't really
+      know how to proceed and didn't have the time either. I finally decided to
+      take the Nvidia Ray-Tracing Tutorial for Vulkan. This allowed me to get to
+      speed and actually grasp how Vulkan worked.
+    </p>
+    <p>
+      Following this tutorial I was able to get my first rasterized and
+      ray-traced scene.
+    </p>
+    <img src="static/monkey.png" width="100%" alt="ray-traced blender monkey" />
+
+    <p>
+      I know had a base frame where I could work. I started adding things like
+      <a href="https://github.com/CedricGuillemet/ImGuizmo">ImGuizmo</a> (ImGui
+      was already in the base project). And started to learn on how to
+      manipulate transforms, when to rebuild the acceleration structures and
+      things like that.
+    </p>
+    <p>
+      On the graphics side of things, I added ray-traced shadows and
+      reflections. Both of which were quite easy to implement given the nature
+      of ray-tracing. This allowed me to have full-working mirrors in the scene.
+      The difference between getting mirrors to work in ray-tracing vs
+      rasterization is huge.
+    </p>
+    <img src="static/mirror.png" width="100%" alt="ray-traced shadows" />
+  </body>
+</html>

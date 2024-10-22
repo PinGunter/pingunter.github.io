@@ -1,0 +1,44 @@
+.dark {
+  color: gainsboro;
+  background-color: rgb(39, 39, 39);
+}
+
+.dark a {
+  color: gainsboro;
+}
+
+.light {
+  background-color: gainsboro;
+  color: rgb(39, 39, 39);
+}
+
+.light a {
+  color: rgb(39, 39, 39);
+}
+
+p {
+  display: inline;
+}
+body {
+  font-family: monospace;
+  margin: auto;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  max-width: 800px;
+  font-size: larger;
+  transition: 120ms;
+}
+
+header {
+  align-self: flex-end;
+  display: inline;
+}
+
+.toggle {
+  font-family: monospace;
+  padding: 5px 20px;
+  border-radius: 8px;
+  border: 1px;
+  font-size: large;
+}
