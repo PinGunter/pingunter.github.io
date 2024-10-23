@@ -58,8 +58,10 @@ header {
   flex-direction: column;
   align-items: center;
   gap: 5%;
+  max-width: 800px;
 }
 
 img {
   max-width: 800px;
+  width: 100%;
 }
