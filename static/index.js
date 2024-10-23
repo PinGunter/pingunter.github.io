@@ -25,3 +25,21 @@ function toggleDarkMode() {
   localStorage.setItem("darkTheme", !isCurrentlyDark);
   updateCSS();
 }
+
+const locToggle = document.getElementById("loc");
+locToggle.addEventListener("click", () => {
+  const items = document.getElementById("loc-items");
+  const state = items.style.display === "none" || !items.style.display;
+  debugger;
+  items.style.display = state ? "block" : "none";
+  locToggle.innerText = `${state ? "▼" : "▶"} List of Contents`;
+});
+
+const galleryToggle = document.getElementById("gallery");
+locToggle.addEventListener("click", () => {
+  const items = document.getElementById("loc-items");
+  const state = items.style.display === "none" || !items.style.display;
+  debugger;
+  items.style.display = state ? "block" : "none";
+  locToggle.innerText = `${state ? "▼" : "▶"} List of Contents`;
+});

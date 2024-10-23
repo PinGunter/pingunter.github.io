@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title style="display: none">Salva's Site</title>
     <link rel="stylesheet" href="static/styles.css" />
-    <script src="static/index.js"></script>
   </head>
   <body onload="onLoad()" class="light">
     <header>
@@ -18,8 +17,8 @@
       />
     </header>
     <h1>How AstraEngine was made</h1>
-    <h2>List of Contents</h2>
-    <ul>
+    <h2 id="loc" class="dropdown">▶ List of Contents</h2>
+    <ul id="loc-items">
       <li>
         <a href="#1">Begginings with Vulkan</a>
       </li>
@@ -27,6 +26,72 @@
         <a href="#2">Taking the Nvidia Tutorials</a>
       </li>
     </ul>
+    <h2 id="0">What Is AstraEngine?</h2>
+    <p>
+      AstraEngine is a C++ library to help you get create a 3D graphical
+      application with hardware-accelerated ray-tracing support. It started as a
+      Master's Thesis for my Software Development / Computer Graphics Master.
+      However, I still continue to work on it, adding new features from time to
+      time.
+    </p>
+    <p>
+      One of the main goals was to make it simple enough so it could also be
+      used, at least partly, in Computer Graphics courses. Since my previous
+      experience with this kind of software provided by professors was not that
+      great.
+    </p>
+    <p>
+      The other main objective was to support hardware-accelerated ray-tracing,
+      since it was a particular interest of mine and my tutor. It's also an
+      interesting technology to learn, specially with the current state of
+      modern GPUs with broad support for it.
+    </p>
+    <p>
+      You can check the code at
+      <a href="https://github.com/PinGunter/AstraEngine">AstraEngine Repo</a>
+      and checkout out some examples that use the library at
+      <a href="https://github.com/PinGunter/AstraExamples">samples repository</a
+      >.
+    </p>
+    <p>
+      The latest upgrade has been the creation of a pathtracer. It is currently
+      a naive implementation but one that can create really realistic images.
+    </p>
+    <h3>Some Pathtraced Pictures:</h3>
+    <div class="images">
+      <figure>
+        <figcaption>
+          Cornell Box, pathtraced with metal and glass spheres:
+        </figcaption>
+        <br />
+        <img
+          src="static/cornell.png"
+          alt="Cornell Box, pathtraced with metal and glass spheres"
+        />
+      </figure>
+
+      <figure>
+        <figcaption>
+          Blender's Suzanne, as a glass object. Illluminated by a light source
+          above it:
+        </figcaption>
+        <br />
+        <img
+          src="static/glassmonkey.jpg"
+          alt="Blender's Suzanne, as a glass object. Illluminated by a light source above it"
+        />
+      </figure>
+      <figure>
+        <figcaption>
+          A complete dark scene, just illuminated by the lights of a car:
+        </figcaption>
+        <br />
+        <img
+          src="static/car.jpg"
+          alt="A complete dark scene, just illuminated by the lights of a car"
+        />
+      </figure>
+    </div>
     <h2 id="1">Begginings with Vulkan</h2>
     <p>
       When I first started this project, 11 months ago, I had never used Vulkan
@@ -84,5 +149,6 @@
       rasterization is huge.
     </p>
     <img src="static/mirror.png" width="100%" alt="ray-traced shadows" />
+    <script src="static/index.js"></script>
   </body>
 </html>
