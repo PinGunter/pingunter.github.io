@@ -13,9 +13,13 @@ function updateCSS() {
     if (theme === "true") {
       document.body.className = "dark";
       document.getElementById("toggle").classList = "toggle light";
+      document.getElementById("diagram_dark").style.display = "inherit";
+      document.getElementById("diagram_light").style.display = "none";
     } else {
       document.body.className = "light";
       document.getElementById("toggle").classList = "toggle dark";
+      document.getElementById("diagram_dark").style.display = "none";
+      document.getElementById("diagram_light").style.display = "inherit";
     }
   }
 }

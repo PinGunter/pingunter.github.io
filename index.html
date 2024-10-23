@@ -25,6 +25,9 @@
       <li>
         <a href="#2">Taking the Nvidia Tutorials</a>
       </li>
+      <li>
+        <a href="#3">Extending what we had</a>
+      </li>
     </ul>
     <h2 id="0">What Is AstraEngine?</h2>
     <p>
@@ -120,7 +123,7 @@
       ray-traced scene.
     </p>
     <img src="static/monkey.png" width="100%" alt="ray-traced blender monkey" />
-
+    <h2 id="3">Extending what we had</h2>
     <p>
       I know had a base frame where I could work. I started adding things like
       <a href="https://github.com/CedricGuillemet/ImGuizmo">ImGuizmo</a> (ImGui
@@ -136,6 +139,41 @@
       rasterization is huge.
     </p>
     <img src="static/mirror.png" width="100%" alt="ray-traced shadows" />
+
+    <p>
+      I started adding new abstractions so that I could work better. One of the
+      goals is for the library to be simple to use so I made several classes
+      that worked together to achieve that.
+    </p>
+    The most important ones are:
+    <ul>
+      <li>
+        <strong>Renderer</strong>: Renders the scene following
+        <a href="#renderdiagram">this diagram</a>
+      </li>
+      <li>
+        <strong>App</strong>: Is the main class that gets all the components
+        working together
+      </li>
+      <li>
+        <strong>Device</strong>: In charge of Vulkan and device initialization
+      </li>
+      <li>
+        <strong>Node3D</strong>: Represents any object present in a scene, every
+        object with a transform matrix
+      </li>
+    </ul>
+    <img
+      id="diagram_light"
+      src="static/renderer_light.png"
+      alt="render process"
+    />
+    <img
+      id="diagram_dark"
+      src="static/renderer_dark.png"
+      alt="render process"
+    />
+
     <script src="static/index.js"></script>
   </body>
 </html>

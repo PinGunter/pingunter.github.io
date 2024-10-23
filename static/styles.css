@@ -65,3 +65,7 @@ img {
   max-width: 800px;
   width: 100%;
 }
+
+.mxgraph {
+  align-self: center;
+}
